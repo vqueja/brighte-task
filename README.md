@@ -41,7 +41,7 @@ A modern GraphQL API for managing food service leads, built with Node.js, Apollo
 3. (Optional) Create a `.env` file based on your environment needs:
    ```env
    DATABASE_URL="file:./dev.db"
-   PORT=4000
+   PORT=5200
    ```
 
 ### Running the Application
