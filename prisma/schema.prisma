@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  mobile    String
+  postcode  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  services  ServiceInterest[]
+}
+
+model ServiceInterest {
+  id     String @id @default(uuid())
+  type   String // Changed from enum to String for SQLite
+  leadId String
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@unique([leadId, type])
+}
