@@ -3,10 +3,12 @@ import { GraphQLError } from 'graphql';
 
 export const resolvers = {
     Query: {
-        leads: async () => {
+        leads: async (_: any, { take, skip }: { take?: number; skip?: number }) => {
             return prisma.lead.findMany({
                 include: { services: true },
                 orderBy: { createdAt: 'desc' },
+                ...(take !== undefined && { take }),
+                ...(skip !== undefined && { skip }),
             });
         },
 
@@ -54,7 +56,7 @@ export const resolvers = {
                         postcode,
                         services: {
                             create: services.map((type: string) => ({ type })),
-                        },
+                        }
                     },
                     include: {
                         services: true,
@@ -78,6 +80,13 @@ export const resolvers = {
         // Transform services array to return just the types
         services: (parent: any) => {
             return parent.services.map((s: any) => s.type);
+        },
+        // Transform dates to ISO string format
+        createdAt: (parent: any) => {
+            return parent.createdAt.toISOString();
+        },
+        updatedAt: (parent: any) => {
+            return parent.updatedAt.toISOString();
         },
     },
 };

@@ -27,7 +27,7 @@ export const typeDefs = gql`
   }
 
   type Query {
-    leads: [Lead!]!
+    leads(take: Int, skip: Int): [Lead!]!
     lead(id: ID!): Lead
   }
 
